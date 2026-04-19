@@ -9,9 +9,13 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const router = express.Router();
+// Get the correct public URL based on environment
+const getPublicUrl = (req, fileName) => {
+  // For production/deployed, use environment variable or reconstruct from headers
+  const host = process.env.PUBLIC_URL || `${req.protocol}://${req.get('host')}`;
+  return `${host}/uploads/${fileName}`;
+};
 
-// Upload single image
 router.post('/upload', upload.single('image'), async (req, res) => {
   try {
     if (!req.file) {
@@ -41,7 +45,7 @@ router.post('/upload', upload.single('image'), async (req, res) => {
       compressedSize: compressedSize,
       mimeType: req.file.mimetype,
       folder: folder,
-      publicUrl: `${req.protocol}://${req.get('host')}/uploads/${compressedFileName}`,
+      publicUrl: getPublicUrl(req, compressedFileName),
       width,
       height
     });
@@ -94,7 +98,7 @@ router.post('/upload-bulk', upload.array('images', 50), async (req, res) => {
           compressedSize: compressedSize,
           mimeType: file.mimetype,
           folder: folder,
-          publicUrl: `${req.protocol}://${req.get('host')}/uploads/${compressedFileName}`,
+          publicUrl: getPublicUrl(req, compressedFileName),
           width,
           height
         });

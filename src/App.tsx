@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Image as ImageIcon, RefreshCw, AlertCircle } from 'lucide-react';
+import { Image as ImageIcon, RefreshCw, AlertCircle, Images } from 'lucide-react';
 import ImageUploader from './components/ImageUploader';
 import ImageGallery from './components/ImageGallery';
 import StatsCard from './components/StatsCard';
 import FolderSelector from './components/FolderSelector';
+import ImagesPage from './pages/ImagesPage';
 import {
   uploadImages,
   getImages,
@@ -17,6 +18,7 @@ import {
 } from './services/api';
 
 function App() {
+  const [currentPage, setCurrentPage] = useState<'dashboard' | 'gallery'>('dashboard');
   const [images, setImages] = useState<ImageData[]>([]);
   const [folders, setFolders] = useState<FolderStats[]>([]);
   const [selectedFolder, setSelectedFolder] = useState('all');
@@ -145,9 +147,9 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Header */}
-      <header className="bg-white shadow-md">
+      <header className="bg-white shadow-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="bg-blue-600 p-2 rounded-lg">
                 <ImageIcon className="w-8 h-8 text-white" />
@@ -167,9 +169,39 @@ function App() {
               Refresh
             </button>
           </div>
+
+          {/* Navigation Tabs */}
+          <div className="flex gap-4 border-t pt-4">
+            <button
+              onClick={() => setCurrentPage('dashboard')}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                currentPage === 'dashboard'
+                  ? 'bg-blue-100 text-blue-700 border-b-2 border-blue-600'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Dashboard
+            </button>
+            <button
+              onClick={() => setCurrentPage('gallery')}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
+                currentPage === 'gallery'
+                  ? 'bg-blue-100 text-blue-700 border-b-2 border-blue-600'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              <Images size={18} />
+              Gallery
+            </button>
+          </div>
         </div>
       </header>
 
+      {/* Gallery Page */}
+      {currentPage === 'gallery' && <ImagesPage />}
+
+      {/* Dashboard Page */}
+      {currentPage === 'dashboard' && (
       <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 space-y-8">
         {/* Error Message */}
         {error && (
@@ -253,6 +285,7 @@ function App() {
           )}
         </div>
       </main>
+      )}
 
       {/* Footer */}
       <footer className="bg-white border-t mt-12">

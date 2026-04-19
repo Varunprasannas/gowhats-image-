@@ -1,9 +1,4 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "env": {
-    "VITE_API_URL": {
-      "default": "http://localhost:5000/api"
-    }
-  }
+  "outputDirectory": "dist"
 }

@@ -8,6 +8,9 @@ A full-stack image hosting application built with React, Node.js, Express, and M
 ![Tech Stack](https://img.shields.io/badge/Node.js-Express-green)
 ![Tech Stack](https://img.shields.io/badge/MongoDB-Database-brightgreen)
 ![Tech Stack](https://img.shields.io/badge/TypeScript-Tailwind-purple)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)
+
+**🌐 Live Demo:** https://gowhats-image.vercel.app
 
 ## ✨ Features
 
@@ -26,6 +29,8 @@ A full-stack image hosting application built with React, Node.js, Express, and M
 ✅ **Real-time Stats** - Track storage, compression savings  
 ✅ **Image Metadata** - View dimensions, file size, compression ratio  
 ✅ **Responsive Design** - Works on desktop, tablet, and mobile  
+✅ **Gallery View** - Grid and list views with search & filtering
+✅ **Production Ready** - Fully tested and documented
 
 ### Technical Features
 ✅ **Real-time API** - No mock data, all live database operations  
@@ -34,6 +39,59 @@ A full-stack image hosting application built with React, Node.js, Express, and M
 ✅ **RESTful API** - Clean, documented endpoints  
 ✅ **Error Handling** - Comprehensive error messages  
 ✅ **Type Safety** - Full TypeScript support  
+✅ **Dynamic URL Resolution** - Works seamlessly across environments
+✅ **URL Fixing Endpoint** - Fix legacy localhost URLs in database
+
+## 🚀 Quick Start
+
+### Live Demo
+- **Frontend:** https://gowhats-image.vercel.app
+- **Dashboard:** Upload and manage images
+- **Gallery:** View all images with grid/list views
+
+### Local Development (5 minutes)
+
+1. **Clone & Install**
+   ```bash
+   git clone https://github.com/Varunprasannas/gowhats-image-.git
+   cd gowhats-image-tool-suite
+   npm install
+   cd server && npm install && cd ..
+   ```
+
+2. **Setup Environment**
+   ```bash
+   # Create .env in root
+   echo "VITE_API_URL=http://localhost:5000/api" > .env
+   
+   # Create server/.env
+   cd server
+   echo "PORT=5000
+   MONGODB_URI=<your-mongodb-uri>
+   NODE_ENV=development
+   PUBLIC_URL=http://localhost:5000" > .env
+   ```
+
+3. **Run Dev Servers**
+   ```bash
+   # Terminal 1 - Frontend
+   npm run dev
+   
+   # Terminal 2 - Backend
+   cd server && npm start
+   ```
+
+4. **Open Browser**
+   - Frontend: http://localhost:5173
+   - API: http://localhost:5000
+
+## 📚 Documentation
+
+- **[ACTION_PLAN.md](./ACTION_PLAN.md)** - 10-minute fix for production
+- **[DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)** - Full deployment instructions
+- **[PROJECT_SETUP.md](./PROJECT_SETUP.md)** - Complete project documentation
+- **[STATUS_REPORT.md](./STATUS_REPORT.md)** - Comprehensive status report
+- **[FIX_SUMMARY.md](./FIX_SUMMARY.md)** - Technical fixes implemented
 
 ## 🛠️ Tech Stack
 

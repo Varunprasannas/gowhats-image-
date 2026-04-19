@@ -20,14 +20,17 @@ export default function ImagesPage() {
   const fetchImages = async () => {
     try {
       setLoading(true);
-      const data = await getImages();
-      setImages(data);
+      const response = await getImages();
+      
+      // Handle both direct array and response object with images array
+      const imageList = Array.isArray(response) ? response : (response as any).images || [];
+      setImages(imageList);
       
       // Extract unique folders
-      const uniqueFolders = Array.from(new Set(data.map(img => img.folder)));
-      setFolders(uniqueFolders);
+      const uniqueFolders = Array.from(new Set(imageList.map((img: ImageData) => img.folder)));
+      setFolders(uniqueFolders as string[]);
       
-      filterImages(data, '', 'all');
+      filterImages(imageList, '', 'all');
     } catch (error) {
       console.error('Error fetching images:', error);
     } finally {
@@ -86,6 +89,9 @@ export default function ImagesPage() {
     }
     setSelectedImages(newSelected);
   };
+
+  // Helper to safely format filesize, defaulting to 0 if undefined
+  const safeFileSize = (size: number | undefined) => size || 0;
 
   const handleDownload = (url: string, filename: string) => {
     const a = document.createElement('a');
@@ -264,9 +270,9 @@ export default function ImagesPage() {
                     </h3>
                     <div className="text-xs text-gray-600 space-y-1">
                       <p>Original: {formatFileSize(image.fileSize)}</p>
-                      <p>Compressed: {formatFileSize(image.compressedSize)}</p>
+                      <p>Compressed: {formatFileSize(safeFileSize(image.compressedSize))}</p>
                       <p className="text-green-600">
-                        Saved: {formatFileSize(image.fileSize - image.compressedSize)}
+                        Saved: {formatFileSize(image.fileSize - safeFileSize(image.compressedSize))}
                       </p>
                       {image.width && image.height && (
                         <p>{image.width} × {image.height}px</p>
@@ -318,14 +324,14 @@ export default function ImagesPage() {
                         <td className="px-6 py-3 text-sm text-gray-600">
                           <div className="text-xs">
                             <p>Original: {formatFileSize(image.fileSize)}</p>
-                            <p>Compressed: {formatFileSize(image.compressedSize)}</p>
+                            <p>Compressed: {formatFileSize(safeFileSize(image.compressedSize))}</p>
                           </div>
                         </td>
                         <td className="px-6 py-3 text-sm text-gray-600">
                           {image.width}×{image.height}
                         </td>
                         <td className="px-6 py-3 text-sm font-semibold text-green-600">
-                          {formatFileSize(image.fileSize - image.compressedSize)}
+                          {formatFileSize(image.fileSize - safeFileSize(image.compressedSize))}
                         </td>
                         <td className="px-6 py-3">
                           <div className="flex gap-2">

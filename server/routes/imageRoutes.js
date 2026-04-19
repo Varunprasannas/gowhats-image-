@@ -333,4 +333,38 @@ router.get('/stats', async (req, res) => {
   }
 });
 
+// Fix image URLs - Update localhost URLs to production URLs
+router.post('/fix-urls', async (req, res) => {
+  try {
+    const oldDomain = req.body.oldDomain || 'http://localhost:5000';
+    const newDomain = process.env.PUBLIC_URL || `${req.protocol}://${req.get('host')}`;
+
+    // Find all images with old URLs
+    const images = await Image.find({
+      publicUrl: { $regex: 'localhost' }
+    });
+
+    let updatedCount = 0;
+
+    for (const image of images) {
+      // Replace localhost URL with new domain
+      const newUrl = image.publicUrl.replace(/http:\/\/localhost:5000/, newDomain);
+      
+      await Image.findByIdAndUpdate(image._id, { publicUrl: newUrl });
+      updatedCount++;
+    }
+
+    res.json({
+      success: true,
+      message: `Updated ${updatedCount} image URLs`,
+      oldDomain,
+      newDomain,
+      updatedCount
+    });
+  } catch (error) {
+    console.error('Fix URLs error:', error);
+    res.status(500).json({ error: 'Failed to fix URLs', details: error.message });
+  }
+});
+
 export default router;
